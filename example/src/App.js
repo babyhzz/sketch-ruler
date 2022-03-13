@@ -1,16 +1,21 @@
 import './App.css';
 import SketchRuler from '@hutou/sketch-ruler';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useEffect } from 'react';
 
 function App() {
 
   const [scale, setScale] = useState(1);
   const [startX, setStartX] = useState(0);
+  const screenRef = useRef();
+  const screenContainerRef = useRef();
 
 
   useEffect(() => {
-
+    // 滚动居中
+    screenRef.current.scrollLeft = screenContainerRef.current.getBoundingClientRect().width / 2 - 400 //
+    screenRef.current.scrollTop = screenContainerRef.current.getBoundingClientRect().height / 2 - 260 //
+    console.log(screenContainerRef.current.getBoundingClientRect().height);
   }, []);
 
   function handleScroll() {
@@ -30,8 +35,8 @@ function App() {
           setScale(e.target.value);
         }} />
       </div>
-      <div className="screen" onScroll={handleScroll}>
-        <div className="screen-container">
+      <div ref={screenRef} className="screen" onScroll={handleScroll}>
+        <div className="screen-container" ref={screenContainerRef}>
           <div className="board" style={{ width: 160, height: 160, transform: `scale(${scale})` }}></div>
         </div>
       </div>

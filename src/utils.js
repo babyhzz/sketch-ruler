@@ -8,6 +8,11 @@ const getTickUnit = (scale) => {
   return 1
 }
 
+/** 归一化到 0 - wid */
+function normalize(scale, start, end) {
+  return (end - start) * scale;
+}
+
 export function drawRuler(ctx, scale, width, height, start) {
   console.log(`start: ${start}`);
   ctx.clearRect(0, 0, width, height);
@@ -32,24 +37,57 @@ export function drawRuler(ctx, scale, width, height, start) {
   //   end = end + tickUnit;
   // }
 
-  start = Math.ceil(start);
-  console.log('start:', start);
-  let x;
-  for (let end = start; end < start + Math.ceil(width / scale); end++) {
-    // console.log(end);
-    if (end % longTickUnit === 0) {
-      x = Math.ceil((end - start) * scale);
+  // const minTickValue = Math.ceil(start);
+  const minTickValue = start;
+  const maxTickValue = minTickValue + width / scale;
+  const tickCount = Math.floor((maxTickValue - minTickValue) / tickUnit);
+  const firstTickUnitValue = Math.ceil((minTickValue / tickUnit)) * tickUnit;
+  for (let i = 0; i < tickCount; i++) {
+    const tickValue = firstTickUnitValue + i * tickUnit;
+    const x = Math.ceil((tickValue - minTickValue) * scale) + 0.5;
+    if (tickValue % (10 * tickUnit) === 0) {
       ctx.moveTo(x, 0);
       ctx.lineTo(x, 20);
-      console.log(`x=${x}, end=${end}`);
-      ctx.fillText(end, x + 2, 20);
-    } else if (end % tickUnit === 0) {
-      x = Math.ceil((end - start) * scale);
-      ctx.moveTo(x, 0)
+      ctx.fillText(tickValue, x + 2, 20);
+    } else {
+      ctx.moveTo(x, 0);
       ctx.lineTo(x, 10);
-      console.log(`x=${x}, end=${end}`);
     }
+    // if (end % longTickUnit === 0) {
+    //   x = Math.ceil((end - start) * scale);
+    //   ctx.moveTo(x, 0);
+    //   ctx.lineTo(x, 20);
+    //   console.log(`x=${x}, end=${end}`);
+    //   ctx.fillText(end, x + 2, 20);
+    // } else if (end % tickUnit === 0) {
+    //   x = Math.ceil((end - start) * scale);
+    //   ctx.moveTo(x, 0)
+    //   ctx.lineTo(x, 10);
+    //   console.log(`x=${x}, end=${end}`);
+    // }
   }
+
+
+  // console.log('start:', start);
+  // const tickCount = width / scale / tickUnit;
+
+  // let x;
+
+
+  // for (let end = start; end < maxTickValue; end++) {
+  //   if (end % longTickUnit === 0) {
+  //     x = Math.ceil((end - start) * scale);
+  //     ctx.moveTo(x, 0);
+  //     ctx.lineTo(x, 20);
+  //     console.log(`x=${x}, end=${end}`);
+  //     ctx.fillText(end, x + 2, 20);
+  //   } else if (end % tickUnit === 0) {
+  //     x = Math.ceil((end - start) * scale);
+  //     ctx.moveTo(x, 0)
+  //     ctx.lineTo(x, 10);
+  //     console.log(`x=${x}, end=${end}`);
+  //   }
+  // }
 
   ctx.stroke();
 }
