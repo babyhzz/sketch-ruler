@@ -1,7 +1,7 @@
 {
   "name": "@hutou/sketch-ruler",
   "version": "0.0.1",
-  "description": "Javascript tools",
+  "description": "ruler",
   "main": "dist/index.min.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/babyhzz/js-utils.git"
+    "url": "git+https://github.com/babyhzz/sketch-ruler.git"
   },
   "keywords": [
     "utils",
@@ -30,9 +30,9 @@
   "author": "hc",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/babyhzz/js-utils/issues"
+    "url": "https://github.com/babyhzz/sketch-ruler/issues"
   },
-  "homepage": "https://github.com/babyhzz/js-utils#readme",
+  "homepage": "https://github.com/babyhzz/sketch-ruler#readme",
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@babel/preset-env": "^7.16.11",
