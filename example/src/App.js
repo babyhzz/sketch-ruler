@@ -1,12 +1,14 @@
 import './App.css';
 import SketchRuler from '@hutou/sketch-ruler';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { useEffect } from 'react';
+import { useCallback } from 'react';
 
 function App() {
 
   const [scale, setScale] = useState(1);
   const [startX, setStartX] = useState(0);
+  const [startY, setStartY] = useState(0);
   const screenRef = useRef();
   const screenContainerRef = useRef();
 
@@ -14,18 +16,22 @@ function App() {
   useEffect(() => {
     // 滚动居中
     screenRef.current.scrollLeft = screenContainerRef.current.getBoundingClientRect().width / 2 - 400 //
-    screenRef.current.scrollTop = screenContainerRef.current.getBoundingClientRect().height / 2 - 260 //
+    screenRef.current.scrollTop = screenContainerRef.current.getBoundingClientRect().height / 2 - 300 //
     console.log(screenContainerRef.current.getBoundingClientRect().height);
   }, []);
 
-  function handleScroll() {
+  const handleScroll = useCallback(() => {
     const screensRect = document.querySelector('.screen').getBoundingClientRect()
     const boardRect = document.querySelector('.board').getBoundingClientRect()
 
     // 标尺开始的刻度
-    const startX = (screensRect.left - boardRect.left) / scale
+    const startX = (screensRect.left - boardRect.left) / scale;
+    const startY = (screensRect.top - boardRect.top) / scale;
     setStartX(startX);
-  }
+    setStartY(startY);
+  }, [scale]);
+
+  useEffect(() => handleScroll(), [scale]);
 
   return (
     <div className="wrapper">
@@ -40,7 +46,7 @@ function App() {
           <div className="board" style={{ width: 160, height: 160, transform: `scale(${scale})` }}></div>
         </div>
       </div>
-      <SketchRuler scale={scale} startX={startX} />
+      <SketchRuler width={800} height={600} scale={scale} startX={startX} startY={startY} />
     </div>
   );
 }
